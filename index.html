@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrunoTV - Jogos do Dia</title>
+
+<style>
+body{
+    margin:0;
+    background:#050505;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    text-align:center;
+    padding:20px;
+    background:#111;
+    border-bottom:2px solid #ff0000;
+}
+
+.logo{
+    width:180px;
+    max-width:90%;
+}
+
+h1{
+    color:#ff0000;
+}
+
+.container{
+    padding:15px;
+}
+
+.card{
+    background:#151515;
+    border-left:5px solid #ff0000;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 0 10px rgba(255,0,0,.2);
+}
+
+.liga{
+    color:#ff5555;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.times{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:18px;
+}
+
+.vs{
+    color:#ff0000;
+    font-weight:bold;
+}
+
+.hora{
+    margin-top:10px;
+    color:#ddd;
+}
+
+.assistir{
+    margin-top:12px;
+    width:100%;
+    background:#ff0000;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.ao-vivo{
+    background:#ff0000;
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="logo-brunotv.png" class="logo">
+    <h1>⚽ Jogos do Dia</h1>
+</header>
+
+<div class="container" id="jogos">
+Carregando partidas...
+</div>
+
+<script>
+
+async function carregarJogos(){
+
+const hoje = new Date().toISOString().split('T')[0];
+
+const url =
+`https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d=${hoje}&s=Soccer`;
+
+try{
+
+const resposta = await fetch(url);
+const dados = await resposta.json();
+
+const jogos = document.getElementById('jogos');
+
+jogos.innerHTML='';
+
+if(!dados.events){
+jogos.innerHTML='Nenhuma partida encontrada.';
+return;
+}
+
+dados.events.forEach(jogo=>{
+
+jogos.innerHTML += `
+<div class="card">
+
+<div class="liga">
+🏆 ${jogo.strLeague}
+</div>
+
+<div class="times">
+<span>${jogo.strHomeTeam}</span>
+<span class="vs">VS</span>
+<span>${jogo.strAwayTeam}</span>
+</div>
+
+<div class="hora">
+🕒 ${jogo.strTime || 'Horário indisponível'}
+</div>
+
+<button class="assistir"
+onclick="window.location.href='SEU_LINK_DO_CANAL'">
+📺 Assistir
+</button>
+
+</div>
+`;
+
+});
+
+}catch(e){
+
+document.getElementById('jogos').innerHTML =
+'Erro ao carregar partidas.';
+
+}
+
+}
+
+carregarJogos();
+
+</script>
+
+</body>
+</html>
