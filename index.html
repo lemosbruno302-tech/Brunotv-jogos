@@ -1,9 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:white">
 
-<!DOCTYPE html><html>
-<head>
-<title>Teste BrunoTV</title>
-</head>
-<body style="background:black;color:white;text-align:center;padding-top:50px;">
-<h1>BrunoTV Funcionando ✅</h1>
+<h2>Teste API</h2>
+
+<pre id="resultado">Carregando...</pre>
+
+<script>
+fetch("https://www.thesportsdb.com/api/v1/json/123/all_sports.php")
+.then(r => r.text())
+.then(t => {
+document.getElementById("resultado").innerText = t;
+})
+.catch(e => {
+document.getElementById("resultado").innerText =
+"ERRO: " + e.message;
+});
+</script>
+
 </body>
 </html>
