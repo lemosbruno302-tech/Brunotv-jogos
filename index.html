@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrunoTV - Jogos do Dia</title><style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050505;
+color:#fff;
+}
+
+header{
+background:#111;
+padding:20px;
+text-align:center;
+border-bottom:3px solid #ff0000;
+}
+
+.logo{
+width:180px;
+max-width:90%;
+margin-bottom:10px;
+}
+
+h1{
+color:#ff0000;
+font-size:28px;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+background:#151515;
+border-left:5px solid #ff0000;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+box-shadow:0 0 10px rgba(255,0,0,.25);
+}
+
+.liga{
+color:#ff5a5a;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.times{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:17px;
+font-weight:bold;
+}
+
+.vs{
+color:#ff0000;
+}
+
+.hora{
+margin-top:10px;
+color:#ccc;
+}
+
+.status{
+margin-top:8px;
+font-size:14px;
+color:#00ff88;
+}
+
+.loading{
+text-align:center;
+padding:30px;
+font-size:18px;
+}
+
+.erro{
+text-align:center;
+color:#ff5555;
+padding:20px;
+}
+</style></head><body><header>
+<img src="logo-brunotv.png" class="logo" alt="BrunoTV">
+<h1>⚽ Jogos do Dia</h1>
+</header><div class="container" id="jogos">
+<div class="loading">Carregando partidas...</div>
+</div><script>
+
+const API_KEY = "SUA_CHAVE_API_AQUI";
+
+async function carregarJogos() {
+
+const hoje = new Date().toISOString().split("T")[0];
+
+try {
+
+const resposta = await fetch(
+`https://v3.football.api-sports.io/fixtures?date=${hoje}`,
+{
+method: "GET",
+headers: {
+"x-apisports-key": API_KEY
+}
+}
+);
+
+const dados = await resposta.json();
+
+const container = document.getElementById("jogos");
+
+container.innerHTML = "";
+
+if (!dados.response || dados.response.length === 0) {
+container.innerHTML =
+'<div class="erro">Nenhuma partida encontrada.</div>';
+return;
+}
+
+dados.response.forEach(jogo => {
+
+const hora = new Date(jogo.fixture.date)
+.toLocaleTimeString("pt-BR", {
+hour: "2-digit",
+minute: "2-digit"
+});
+
+container.innerHTML += `
+<div class="card">
+
+<div class="liga">
+🏆 ${jogo.league.name}
+</div>
+
+<div class="times">
+<span>${jogo.teams.home.name}</span>
+<span class="vs">VS</span>
+<span>${jogo.teams.away.name}</span>
+</div>
+
+<div class="hora">
+🕒 ${hora}
+</div>
+
+<div class="status">
+${jogo.fixture.status.long}
+</div>
+
+</div>
+`;
+
+});
+
+} catch (erro) {
+
+document.getElementById("jogos").innerHTML =
+'<div class="erro">Erro ao carregar os jogos.</div>';
+
+console.error(erro);
+
+}
+
+}
+
+carregarJogos();
+
+</script></body>
+</html>
