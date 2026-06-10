@@ -1,22 +1,59 @@
-<!DOCTYPE html>
-<html>
-<body style="background:black;color:white">
+<!DOCTYPE html><html>
+<head>
+<meta charset="UTF-8">
+<title>BrunoTV Jogos</title>
+<style>
+body{
+background:#000;
+color:#fff;
+font-family:Arial;
+padding:20px;
+}
+.card{
+background:#111;
+padding:15px;
+margin-bottom:10px;
+border-left:4px solid red;
+border-radius:10px;
+}
+</style>
+</head>
+<body><h1>⚽ BrunoTV Jogos</h1><div id="jogos">Carregando...</div><script>
 
-<h2>Teste API</h2>
+async function carregarJogos(){
 
-<pre id="resultado">Carregando...</pre>
+try{
 
-<script>
-fetch("https://www.thesportsdb.com/api/v1/json/123/all_sports.php")
-.then(r => r.text())
-.then(t => {
-document.getElementById("resultado").innerText = t;
-})
-.catch(e => {
-document.getElementById("resultado").innerText =
-"ERRO: " + e.message;
+const resposta = await fetch(
+"https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?s=Soccer"
+);
+
+const dados = await resposta.json();
+
+let html = "";
+
+dados.countries.forEach(liga => {
+
+html += `
+<div class="card">
+🏆 ${liga.strLeague}
+</div>
+`;
+
 });
-</script>
 
-</body>
+document.getElementById("jogos").innerHTML = html;
+
+}catch(e){
+
+document.getElementById("jogos").innerHTML =
+"Erro: " + e.message;
+
+}
+
+}
+
+carregarJogos();
+
+</script></body>
 </html>
