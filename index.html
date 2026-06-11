@@ -1,59 +1,198 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>BrunoTV Jogos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrunoTV Sports Premium</title>
+
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-background:#000;
-color:#fff;
-font-family:Arial;
+background:#050505;
+color:white;
+}
+
+header{
+background:linear-gradient(90deg,#111,#1a0000);
 padding:20px;
+text-align:center;
+border-bottom:3px solid #ff0000;
+box-shadow:0 0 20px rgba(255,0,0,.3);
 }
-.card{
+
+.logo{
+width:120px;
+height:120px;
+border-radius:20px;
+object-fit:cover;
+box-shadow:0 0 20px rgba(255,0,0,.5);
+}
+
+.titulo{
+font-size:32px;
+font-weight:bold;
+color:#ff0000;
+margin-top:10px;
+}
+
+.subtitulo{
+color:#ccc;
+margin-top:5px;
+}
+
+.relogio{
+text-align:center;
+padding:10px;
 background:#111;
-padding:15px;
-margin-bottom:10px;
-border-left:4px solid red;
-border-radius:10px;
+font-size:18px;
+color:#00ff88;
 }
+
+.container{
+padding:15px;
+}
+
+.section-title{
+font-size:22px;
+color:#ff0000;
+margin:20px 0 15px 0;
+padding-left:10px;
+border-left:5px solid #ff0000;
+}
+
+.live-card{
+background:linear-gradient(135deg,#1a0000,#111);
+border:1px solid #ff0000;
+border-radius:15px;
+padding:15px;
+margin-bottom:15px;
+box-shadow:0 0 15px rgba(255,0,0,.25);
+}
+
+.live-badge{
+display:inline-block;
+background:red;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.teams{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.vs{
+color:#ff0000;
+font-size:20px;
+}
+
+.info{
+margin-top:10px;
+color:#ccc;
+}
+
+iframe{
+width:100%;
+height:700px;
+border:none;
+border-radius:15px;
+background:#111;
+}
+
+.footer{
+text-align:center;
+padding:20px;
+color:#777;
+font-size:14px;
+}
+
 </style>
 </head>
-<body><h1>⚽ BrunoTV Jogos</h1><div id="jogos">Carregando...</div><script>
+<body>
 
-async function carregarJogos(){
+<header>
 
-try{
+<img src="file_000000006b4c71f5835bed854838f692.png" class="logo">
 
-const resposta = await fetch(
-"https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?s=Soccer"
-);
+<div class="titulo">BRUNOTV SPORTS</div>
 
-const dados = await resposta.json();
-
-let html = "";
-
-dados.countries.forEach(liga => {
-
-html += `
-<div class="card">
-🏆 ${liga.strLeague}
+<div class="subtitulo">
+Jogos ao vivo • Futebol • Campeonatos
 </div>
-`;
 
-});
+</header>
 
-document.getElementById("jogos").innerHTML = html;
+<div class="relogio" id="clock"></div>
 
-}catch(e){
+<div class="container">
 
-document.getElementById("jogos").innerHTML =
-"Erro: " + e.message;
+<div class="section-title">
+🔴 Jogos Ao Vivo
+</div>
+
+<div class="live-card">
+
+<div class="live-badge">
+AO VIVO
+</div>
+
+<div class="teams">
+<span>⚽ Atualização automática</span>
+<span class="vs">VS</span>
+<span>🏆 Futebol</span>
+</div>
+
+<div class="info">
+Acompanhe partidas em tempo real.
+</div>
+
+</div>
+
+<div class="section-title">
+⚽ Central de Jogos
+</div>
+
+<iframe
+src="https://www.scorebat.com/embed/livescore/">
+</iframe>
+
+</div>
+
+<div class="footer">
+BrunoTV Sports Premium © 2026
+</div>
+
+<script>
+
+function atualizarRelogio(){
+
+const agora = new Date();
+
+document.getElementById("clock").innerHTML =
+agora.toLocaleDateString('pt-BR') +
+' • ' +
+agora.toLocaleTimeString('pt-BR');
 
 }
 
-}
+setInterval(atualizarRelogio,1000);
+atualizarRelogio();
 
-carregarJogos();
+</script>
 
-</script></body>
+</body>
 </html>
